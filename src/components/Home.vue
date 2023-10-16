@@ -5,13 +5,15 @@
     </template>
     <template #resume>
       <Resume
-        :total-label="'Ahorro total'"
+        :total-label="'Total saving'"
         :label="label"
         :total-amount="100000"
         :amount="amount"
       >
-        <template #graphic> Graphic </template>
-        <template #action> action </template>
+        <template #graphic><Graphic /></template>
+        <template #action>
+          <Action />
+        </template>
       </Resume>
     </template>
     <template #movements>
@@ -25,6 +27,8 @@ import Layout from "./Layout.vue";
 import Header from "./Header.vue";
 import Resume from "./Resume/Index.vue";
 import Movements from "./Movements/Index.vue";
+import Action from "./Action.vue";
+import Graphic from "./Resume/Graphic.vue";
 
 export default {
   components: {
@@ -32,6 +36,8 @@ export default {
     Header,
     Resume,
     Movements,
+    Action,
+    Graphic,
   },
   data() {
     return {
