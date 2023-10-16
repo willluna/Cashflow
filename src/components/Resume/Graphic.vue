@@ -13,7 +13,7 @@
         fill="none"
         stroke="#0689B0"
         stroke-width="2"
-        points="0,0 100,100 200,100 300,200"
+        :points="points"
       />
       <line
         stroke="#04b500"
@@ -27,6 +27,40 @@
     <p>Last 30 days</p>
   </div>
 </template>
+
+<script setup>
+import { defineProps, toRefs, computed } from "vue";
+
+const props = defineProps({
+  amounts: {
+    type: Array,
+    default: () => [],
+  },
+});
+
+const { amounts } = toRefs(props);
+
+const amountToPixels = () => {
+  const min = Math.min(...amounts.value);
+  const max = Math.max(...amounts.value);
+
+  return `${min}, ${max}`;
+};
+
+const points = computed(() => {
+  const total = amounts.value.length;
+
+  return Array(total)
+    .fill(100)
+    .reduce((points, amount, i) => {
+      const x = (300 / total) * (i + 1);
+      const y = amountToPixels(amount);
+      console.log(y);
+
+      return `${points} ${x}, ${y}`;
+    }, "0, 100");
+});
+</script>
 
 <style scoped>
 svg {
