@@ -5,19 +5,24 @@
     </template>
     <template #resume>
       <Resume
-        :total-label="'Total saving'"
+        :total-label="'Ahorro total'"
         :label="label"
-        :total-amount="100000"
+        :total-amount="1000000"
         :amount="amount"
       >
-        <template #graphic><Graphic :amounts="amounts" /></template>
+        <template #graphic>
+          <Graphic :amounts="amounts" />
+        </template>
         <template #action>
-          <Action />
+          <Action @create="create" />
         </template>
       </Resume>
     </template>
     <template #movements>
-      <Movements :movements="movements" />
+      <Movements
+        :movements="movements"
+        @remove="remove"
+      />
     </template>
   </Layout>
 </template>
@@ -26,8 +31,8 @@
 import Layout from "./Layout.vue";
 import Header from "./Header.vue";
 import Resume from "./Resume/Index.vue";
-import Movements from "./Movements/Index.vue";
 import Action from "./Action.vue";
+import Movements from "./Movements/Index.vue";
 import Graphic from "./Resume/Graphic.vue";
 
 export default {
@@ -35,15 +40,14 @@ export default {
     Layout,
     Header,
     Resume,
-    Movements,
     Action,
+    Movements,
     Graphic,
-  },
+},
   data() {
     return {
       label: null,
       amount: null,
-      amounts: [100, 200, 500, 200, -400, -600, -300, 0, 300, 500],
       movements: [
         {
           id: 0,
@@ -98,7 +102,7 @@ export default {
           id: 7,
           title: "Movimiento 8",
           description: "Lorem ipsum dolor sit amet",
-          amount: 0,
+          amount: 100,
           time: new Date("02-01-2022"),
         },
         {
@@ -121,43 +125,31 @@ export default {
   computed: {
     amounts() {
       const lastDays = this.movements
-        .filter((m) => {
+        .filter(m => {
           const today = new Date();
           const oldDate = today.setDate(today.getDate() - 30);
 
           return m.time > oldDate;
         })
-        .map((m) => m.amount);
+        .map(m => m.amount);
 
       return lastDays.map((m, i) => {
         const lastMovements = lastDays.slice(0, i);
 
         return lastMovements.reduce((suma, movement) => {
-          return suma + movement;
+          return suma + movement
         }, 0);
       });
-    },
+    }
   },
+  methods: {
+    create(movement) {
+      this.movements.push(movement);
+    },
+    remove(id) {
+      const index = this.movements.findIndex(m => m.id === id);
+      this.movements.splice(index, 1);
+    }
+  }
 };
 </script>
-
-<style scoped>
-.movements {
-  max-height: 100%;
-  padding: 0 8px;
-  margin-bottom: 14px;
-}
-
-.title {
-  margin: 8px 16px 24px 16px;
-  color: var(--brand-blue);
-}
-
-.content {
-  max-height: 68vh;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  overflow-y: scroll;
-}
-</style>
