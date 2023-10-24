@@ -7,11 +7,11 @@
       <Resume
         :total-label="'Ahorro total'"
         :label="label"
-        :total-amount="1000000"
+        :total-amount="totalAmount"
         :amount="amount"
       >
         <template #graphic>
-          <Graphic :amounts="amounts" />
+          <Graphic :amounts="amounts" @select="select" />
         </template>
         <template #action>
           <Action @create="create" />
@@ -60,20 +60,24 @@ export default {
         .map((m) => m.amount);
 
       return lastDays.map((m, i) => {
-        const lastMovements = lastDays.slice(0, i);
+        const lastMovements = lastDays.slice(0, i + 1);
 
         return lastMovements.reduce((suma, movement) => {
           return suma + movement;
         }, 0);
       });
     },
+    totalAmount() {
+      return this.movements.reduce((suma, m) => {
+        return suma + m.amount;
+      }, 0);
+    },
   },
   mounted() {
     const movements = JSON.parse(localStorage.getItem("movements"));
     console.log(movements);
 
-    if (Array.isArray(movements
-    )) {
+    if (Array.isArray(movements)) {
       this.movements = movements.map((m) => {
         return { ...m, time: new Date(m.time) };
       });
@@ -91,6 +95,10 @@ export default {
     },
     save() {
       localStorage.setItem("movements", JSON.stringify(this.movements));
+    },
+    select(el) {
+      console.log(el);
+      this.amount = el;
     },
   },
 };

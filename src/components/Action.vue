@@ -1,32 +1,32 @@
 <template>
-  <button @click="showModal = true">Add movement</button>
+  <button @click="showModal = true">Agregar movimiento</button>
   <teleport to="#app">
     <Modal v-show="showModal" @close="showModal = false">
       <form @submit.prevent="submit">
         <div class="field">
-          <label>Title</label>
+          <label>Título</label>
           <input type="text" v-model="title" />
         </div>
         <div class="field">
-          <label>Amount</label>
+          <label>Monto</label>
           <input type="number" v-model="amount" />
         </div>
         <div class="field">
-          <label>Description</label>
+          <label>Descripción</label>
           <textarea rows="4" v-model="description"></textarea>
         </div>
         <div class="field">
           <label class="radio-label">
-            <input type="radio" v-model="movementType" value="Income" />
-            <span>Income</span>
+            <input type="radio" v-model="movementType" value="Ingreso" />
+            <span>Ingreso</span>
           </label>
           <label class="radio-label">
-            <input type="radio" v-model="movementType" value="Expense" />
-            <span>Expense</span>
+            <input type="radio" v-model="movementType" value="Gasto" />
+            <span>Gasto</span>
           </label>
         </div>
         <div class="action">
-          <button>Add movement</button>
+          <button>Agregar movimiento</button>
         </div>
       </form>
     </Modal>
@@ -41,7 +41,7 @@ const showModal = ref(false);
 const title = ref("");
 const amount = ref(0);
 const description = ref("");
-const movementType = ref("Income");
+const movementType = ref("Ingreso");
 
 const emit = defineEmits(["create"]);
 
@@ -54,6 +54,10 @@ const submit = () => {
     time: new Date(),
     id: new Date(),
   });
+  title.value = "";
+  description.value = "";
+  amount.value = 0;
+  movementType.value = "Ingreso";
 };
 </script>
 

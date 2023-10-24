@@ -1,5 +1,5 @@
 <template>
-  <di class="modal">
+  <div class="modal">
     <div class="head">
       <p>New movement</p>
       <img @click="close" src="@/assets/close-icon.svg" alt="cerrar" />
@@ -7,7 +7,7 @@
     <div class="body">
       <slot></slot>
     </div>
-  </di>
+  </div>
 </template>
 
 <script setup>
